@@ -2,6 +2,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from flask import Flask, request, url_for, session, redirect
 import time
+from apscheduler.schedulers.background import BackgroundScheduler
 
 app = Flask(__name__)
 app.config.update(
@@ -9,11 +10,18 @@ app.config.update(
     SECRET_KEY='tylerdiscoverweekly'
 )
 TOKEN_INFO = 'token_info'
+scheduler = BackgroundScheduler()
+scheduler.start()
 
 @app.route('/')
 def login():
     auth_url = create_spotify_oauth().get_authorize_url()
     return redirect(auth_url)
+
+@app.route('/health')
+def health_check():
+    return "Health Check OK"
+
 
 @app.route('/redirect')
 def redirect_to_page():
@@ -83,6 +91,13 @@ def create_spotify_oauth():
         redirect_uri=url_for('redirect_to_page', _external=True),
         scope='user-library-read playlist-modify-public playlist-modify-private'
     )
+
+def schedule_discover_weekly():
+    with app.app_context():
+        save_discover()
+
+# Schedule the job to run every week
+scheduler.add_job(func=schedule_discover_weekly, trigger='interval', weeks=1)
 
 if __name__ == '__main__':
     app.run(debug=True)

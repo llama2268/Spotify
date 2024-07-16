@@ -1,0 +1,34 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: tyleryangprojects
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: spotify
+service: spotify-discover-weekly
+
+provider:
+  name: aws
+  runtime: python3.8
+  region: us-east-1
+
+functions:
+  app:
+    handler: wsgi_handler.handler
+    events:
+      - http:
+          path: /
+          method: any
+      - http:
+          path: /{proxy+}
+          method: any
+
+custom:
+  wsgi:
+    app: app.app
+    packRequirements: false
+
+plugins:
+  - serverless-wsgi
+
+package:
+  exclude:
+    - node_modules/**
+    - venv/**

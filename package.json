@@ -1,0 +1,7 @@
+{
+    "name": "spotify-discover-weekly",
+    "version": "1.0.0",
+    "devDependencies": {
+        "serverless-wsgi": "^1.7.8"
+    }
+}
