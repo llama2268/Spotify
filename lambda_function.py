@@ -7,8 +7,8 @@ import uuid
 
 # Constants
 TOKEN_TABLE = 'SpotifyTokens'
-client_id = "ccce6787bbb14a3dba834b5a5282b97f"
-client_secret = "37f8bd0bb3404ddb923846aa36af9c18"
+client_id = CLIENT_ID
+client_secret = CLIENT_SECRET
 redirect_uri = "https://5rhq9t2d0l.execute-api.us-west-1.amazonaws.com/prod/redirect"
 
 dynamodb = boto3.resource('dynamodb')
