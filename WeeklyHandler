@@ -1,0 +1,13 @@
+import json
+import urllib3
+
+def lambda_handler(event, context):
+    url = "https://5rhq9t2d0l.execute-api.us-west-1.amazonaws.com/prod/saveDiscoverWeekly"
+    
+    http = urllib3.PoolManager()
+    response = http.request('GET', url)
+
+    return {
+        'statusCode': response.status,
+        'body': response.data.decode('utf-8')
+    }
